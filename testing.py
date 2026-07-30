@@ -95,7 +95,7 @@ trainer = RL4COTrainer(
     accelerator="gpu",
     devices=1,
     logger=None,
-    default_root_dir=str(modelArchitecture)+"/CVRP"+str(numOfLocations)+"/test/",
+    default_root_dir="trained_models/"+str(modelArchitecture)+"/CVRP"+str(numOfLocations)+"/test/",
 )
 
 trainer.test(

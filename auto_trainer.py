@@ -11,9 +11,11 @@ trainingList = {
     6: [20,50,100],
 }
 
+log_file = open("experiment_log.txt", "w")
+
 for enumArch, numLocList in trainingList.items():
     for numLoc in numLocList:
-        print(f"\nStarting {architectureList[enumArch]} on CVRP{numLoc}\n")
+        print(f"Starting {architectureList[enumArch]} on CVRP{numLoc}")
         subprocess.run(
             [
                 "python",
@@ -21,7 +23,11 @@ for enumArch, numLocList in trainingList.items():
                 str(enumArch),
                 str(numLoc),
             ],
-            check=True
+            check=True,
+            #stdout=log_file,
+            stderr=log_file,
+
         )
-        print(f"\nFinished {architectureList[enumArch]} on CVRP{numLoc}\n")
-        
+        print(f"Finished {architectureList[enumArch]} on CVRP{numLoc}")
+
+log_file.close()

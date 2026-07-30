@@ -1,0 +1,5 @@
+TO run auto_trainer.py with logging:
+  On Windows CMD:
+    python auto_trainer.py > experiment_log.txt 2>&1
+  Powershell atau Unix kyknya:
+    python auto_trainer.py 2>&1 | tee experiment_log.txt

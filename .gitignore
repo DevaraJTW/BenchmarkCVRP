@@ -4,3 +4,4 @@ rl4co_test/
 **/__pycache__/
 **/__pycache__temp/
 dfgPackage.egg-info/
+experiment_log.txt

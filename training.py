@@ -8,6 +8,8 @@ from rl4co.utils.trainer import RL4COTrainer
 
 from tensordict.tensordict import TensorDict
 import rl4co.envs.routing.cvrp.render as cvrp_render
+from lightning.pytorch.callbacks import Timer
+from utilities.timer_logger import TimeLogger
 
 from models.default_baseline import getBaselinePolicy
 from models.complete_context_embedding import getAggregatePolicy
@@ -24,13 +26,16 @@ from torch.utils.data import DataLoader
 
 _orig_render = cvrp_render.render
 
+builtin_timer = Timer()
+custom_timer = TimeLogger(builtin_timer)
+
 @staticmethod
 def render_with_depot(td: TensorDict, actions: torch.Tensor = None, ax=None):
     return _orig_render(td, actions, ax, skip_depot=False)
 
 CVRPEnv.render = render_with_depot
 
-numOfLocations = 100
+numOfLocations = 20
 valFilePath = "CVRP"+str(numOfLocations)+"/cvrp"+str(numOfLocations)+"_val.npz"
 testFilePath = "CVRP"+str(numOfLocations)+"/cvrp"+str(numOfLocations)+"_test.npz"
 
@@ -58,7 +63,7 @@ architectureList = [
     "GRUGraphCTX",              # 5
     "AttentionSAGEEncoder"      # 6
 ]
-modelArchitecture = architectureList[6]
+modelArchitecture = architectureList[0]
 
 match modelArchitecture:
     case "Baseline":
@@ -86,13 +91,15 @@ model = REINFORCE(
 )
 
 trainer = RL4COTrainer(
-    max_epochs=150,
+    max_epochs=3,
     accelerator="gpu",
     devices=1,
     logger=None,
+    callbacks=[builtin_timer, custom_timer],
     default_root_dir=str(modelArchitecture)+"/CVRP"+str(numOfLocations)+"/",
 )
 
 trainer.fit(
     model,
     )
+

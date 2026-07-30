@@ -9,7 +9,7 @@ from rl4co.utils.trainer import RL4COTrainer
 from tensordict.tensordict import TensorDict
 import rl4co.envs.routing.cvrp.render as cvrp_render
 
-from get_model_file import getModelFile
+from utilities.get_model_file import getModelFile
  
 from models.default_baseline import getBaselinePolicy
 from models.complete_context_embedding import getAggregatePolicy

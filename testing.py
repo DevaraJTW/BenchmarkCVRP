@@ -1,5 +1,6 @@
 import torch
 import matplotlib.pyplot as plt
+import sys
 
 from rl4co.envs import CVRPEnv
 from rl4co.models.zoo import AttentionModel
@@ -10,15 +11,8 @@ from tensordict.tensordict import TensorDict
 import rl4co.envs.routing.cvrp.render as cvrp_render
 
 from utilities.get_model_file import getModelFile
- 
-from models.default_baseline import getBaselinePolicy
-from models.complete_context_embedding import getAggregatePolicy
-from models.set2set_graph_ctx import getSet2SetPolicy
-from models.weighted_average import getWeightedAveragePolicy
-from models.weighted_average_simple import getWeightedAverageSimplePolicy
-from models.gru_graph_ctx import getGRUGraphCTXPolicy
-from models.attention_sage_encoder import getAttentionSAGEEncoderPolicy
-#from models.bottleneck_graph_ctx import getBottleneckPolicy
+
+from models.architectures import architectureList, getPolicyByModelArchitecture
 
 from rl4co.data.utils import load_npz_to_tensordict
 from rl4co.data.dataset import TensorDictDataset
@@ -32,7 +26,7 @@ def render_with_depot(td: TensorDict, actions: torch.Tensor = None, ax=None):
 
 CVRPEnv.render = render_with_depot
 
-numOfLocations = 100
+numOfLocations = 100 if len(sys.argv) < 3 else int(sys.argv[2])
 valFilePath = "CVRP"+str(numOfLocations)+"/cvrp"+str(numOfLocations)+"_val.npz"
 testFilePath = "CVRP"+str(numOfLocations)+"/cvrp"+str(numOfLocations)+"_test.npz"
 
@@ -47,38 +41,14 @@ env = CVRPEnv(
     test_file = testFilePath,
 )
 
+modelArchitecture = architectureList[0] if len(sys.argv) < 2 else architectureList[int(sys.argv[1])]
 embeddingDimension = 128
 numEncoderLayers = 3
 numberOfHeads = 8
 
-architectureList = [
-    "Baseline",                 # 0
-    "Aggregate",                # 1
-    "Set2Set",                  # 2
-    "WeightedAverage",          # 3
-    "WeightedAverageSimple",    # 4
-    "GRUGraphCTX",              # 5
-    "AttentionSAGEEncoder"      # 6
-]
-modelArchitecture = architectureList[6]
-modelCVRPNumber = 100
-
-match modelArchitecture:
-    case "Baseline":
-        policy = getBaselinePolicy(env, embeddingDimension, numEncoderLayers, numberOfHeads)
-    case "Aggregate":
-        policy = getAggregatePolicy(env, embeddingDimension, numEncoderLayers, numberOfHeads)
-    case "Set2Set":
-        policy = getSet2SetPolicy(env, embeddingDimension, numEncoderLayers, numberOfHeads)
-    case "WeightedAverage":
-        policy = getWeightedAveragePolicy(env, embeddingDimension, numEncoderLayers, numberOfHeads)
-    case "WeightedAverageSimple":
-        policy = getWeightedAverageSimplePolicy(env, embeddingDimension, numEncoderLayers, numberOfHeads)         
-    case "GRUGraphCTX":
-        policy = getGRUGraphCTXPolicy(env, embeddingDimension, numEncoderLayers, numberOfHeads)
-    case "AttentionSAGEEncoder":
-        policy = getAttentionSAGEEncoderPolicy(env, embeddingDimension, numEncoderLayers, numberOfHeads)
+policy = getPolicyByModelArchitecture(modelArchitecture, env, embeddingDimension, numEncoderLayers, numberOfHeads)
         
+modelCVRPNumber = 100
 modelFilePath = getModelFile(modelCVRPNumber, modelArchitecture)
 
 model = REINFORCE(

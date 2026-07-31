@@ -61,7 +61,7 @@ model = REINFORCE(
 )
 
 trainer = RL4COTrainer(
-    max_epochs=1,
+    max_epochs=150,
     accelerator="gpu",
     devices=1,
     logger=None,

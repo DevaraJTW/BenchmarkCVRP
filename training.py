@@ -9,6 +9,7 @@ from rl4co.utils.trainer import RL4COTrainer
 
 from tensordict.tensordict import TensorDict
 import rl4co.envs.routing.cvrp.render as cvrp_render
+import lightning as L
 from lightning.pytorch.callbacks import Timer
 from utilities.timer_logger import TimeLogger
 
@@ -17,6 +18,11 @@ from models.architectures import architectureList, getPolicyByModelArchitecture
 from rl4co.data.utils import load_npz_to_tensordict
 from rl4co.data.dataset import TensorDictDataset
 from torch.utils.data import DataLoader
+
+#seed = 6262
+#seed = 1098
+seed = 8765
+L.seed_everything(seed, workers=True)
 
 _orig_render = cvrp_render.render
 

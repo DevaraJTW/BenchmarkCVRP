@@ -1,5 +1,5 @@
 def getModelFile(CVRPNumber: int, architecture: str):
-    filename = ""
+    filename = "trained_models/"
     filename += architecture
     filename += "/CVRP" + str(CVRPNumber)
     filename += "/lightning_logs/version_0/checkpoints/"

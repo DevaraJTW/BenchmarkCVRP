@@ -3,3 +3,42 @@ TO run auto_trainer.py with logging:
     python auto_trainer.py > experiment_log.txt 2>&1
   Powershell atau Unix kyknya:
     python auto_trainer.py 2>&1 | tee experiment_log.txt
+
+
+
+
+
+baseline 20
+-6.480399131774902 20
+
+no ESF
+-6.984398365020752 100
+-7.036060333251953 100 cap 50
+
+with ESF
+-6.967706203460693 100
+-6.965953350067139 100 cap 50
+
+with ESF all
+-6.967668533325195 100
+-6.9660797119140625 100 cap 50
+
+baseline 50
+-13.399788856506348
+
+100 cap 30
+-13.611536026000977 no
+-13.616673469543457 with
+
+100 cap 50
+-13.579501152038574 no
+-13.570923805236816 with
+
+
+
+
+
+
+
+
+

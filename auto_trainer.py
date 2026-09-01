@@ -9,6 +9,7 @@ trainingList = {
     4: [20,50,100],
     5: [20,50,100],
     6: [20,50,100],
+    7: [20,50,100],
 }
 
 log_file = open("experiment_log.txt", "w")

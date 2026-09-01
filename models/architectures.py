@@ -5,6 +5,7 @@ from models.weighted_average import getWeightedAveragePolicy
 from models.weighted_average_simple import getWeightedAverageSimplePolicy
 from models.gru_graph_ctx import getGRUGraphCTXPolicy
 from models.attention_sage_encoder import getAttentionSAGEEncoderPolicy
+from models.learnable_depot_modifier import getLearnableDepotProbsPolicy
 
 architectureList = [
     "Baseline",                 # 0
@@ -13,7 +14,8 @@ architectureList = [
     "WeightedAverage",          # 3
     "WeightedAverageSimple",    # 4
     "GRUGraphCTX",              # 5
-    "AttentionSAGEEncoder"      # 6
+    "AttentionSAGEEncoder",     # 6
+    "LearnableDepotModifier",   # 7
 ]
 
 def getPolicyByModelArchitecture(
@@ -39,5 +41,7 @@ def getPolicyByModelArchitecture(
             policy = getGRUGraphCTXPolicy(env, embeddingDimension, numEncoderLayers, numberOfHeads)
         case "AttentionSAGEEncoder":
             policy = getAttentionSAGEEncoderPolicy(env, embeddingDimension, numEncoderLayers, numberOfHeads)
+        case "LearnableDepotModifier":
+            policy = getLearnableDepotProbsPolicy(env, embeddingDimension, numEncoderLayers, numberOfHeads)
 
     return policy

@@ -72,7 +72,7 @@ trainer = RL4COTrainer(
     devices=1,
     logger=None,
     callbacks=[builtin_timer, custom_timer],
-    default_root_dir="trained_models/"+str(modelArchitecture)+"/CVRP"+str(numOfLocations)+"/",
+    default_root_dir="trained_models_"+str(seed)+"/"+str(modelArchitecture)+"/CVRP"+str(numOfLocations)+"/",
 )
 
 trainer.fit(

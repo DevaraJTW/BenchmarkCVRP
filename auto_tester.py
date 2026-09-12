@@ -79,25 +79,25 @@ def TestModel(model_index, train_problem_size, test_problem_size):
     return results[0]["test/reward"]
 
 def main():
+    trainingList = {
+        0: [20,50,100],
+        1: [20,50,100],
+        2: [20,50,100],
+        3: [20,50,100],
+        4: [20,50,100],
+        5: [20,50,100],
+        6: [20,50,100],
+        7: [20,50,100],
+    }
+
     results = {}
-    for i in range(len(architectureList)):
-        results[architectureList[i]+"CVRP20"] = [
-            TestModel(i, 20, 20),
-            TestModel(i, 20, 50),
-            TestModel(i, 20, 100),
-        ]
-
-        results[architectureList[i]+"CVRP50"] = [
-            TestModel(i, 50, 20),
-            TestModel(i, 50, 50),
-            TestModel(i, 50, 100),
-        ]
-
-        results[architectureList[i]+"CVRP100"] = [
-            TestModel(i, 100, 20),
-            TestModel(i, 100, 50),
-            TestModel(i, 100, 100),
-        ]
+    for enumArch, numLocList in trainingList.items():
+        for numLoc in numLocList:
+            results[architectureList[enumArch]+"CVRP"+str(numLoc)] = [
+                TestModel(enumArch, numLoc, 20),
+                TestModel(enumArch, numLoc, 50),
+                TestModel(enumArch, numLoc, 100),
+            ]
 
     print(results)
 

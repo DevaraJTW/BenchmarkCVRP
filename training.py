@@ -21,8 +21,8 @@ from torch.utils.data import DataLoader
 
 #seed = 6262
 #seed = 1098
-seed = 8765
-L.seed_everything(seed, workers=True)
+#seed = 8765
+#L.seed_everything(seed, workers=True)
 
 _orig_render = cvrp_render.render
 
@@ -72,7 +72,7 @@ trainer = RL4COTrainer(
     devices=1,
     logger=None,
     callbacks=[builtin_timer, custom_timer],
-    default_root_dir="trained_models_"+str(seed)+"/"+str(modelArchitecture)+"/CVRP"+str(numOfLocations)+"/",
+    default_root_dir="trained_models/"+str(modelArchitecture)+"/CVRP"+str(numOfLocations)+"/",
 )
 
 trainer.fit(

@@ -48,7 +48,7 @@ def TestModel(model_index, train_problem_size, test_problem_size):
     numEncoderLayers = 3
     numberOfHeads = 8
 
-    policy = getPolicyByModelArchitecture(modelArchitecture, env, embeddingDimension, numEncoderLayers, numberOfHeads)
+    policy = getPolicyByModelArchitecture(modelArchitecture, env, embeddingDimension, numEncoderLayers, numberOfHeads, train_problem_size, test_problem_size)
 
     modelCVRPNumber = train_problem_size
     modelFilePath = getModelFile(modelCVRPNumber, modelArchitecture)
@@ -80,14 +80,15 @@ def TestModel(model_index, train_problem_size, test_problem_size):
 
 def main():
     trainingList = {
-        0: [20,50,100],
-        1: [20,50,100],
-        2: [20,50,100],
-        3: [20,50,100],
-        4: [20,50,100],
-        5: [20,50,100],
-        6: [20,50,100],
-        7: [20,50,100],
+        #0: [20,50,100],
+        #1: [20,50,100],
+        #2: [20,50,100],
+        #3: [20,50,100],
+        #4: [20,50,100],
+        #5: [20,50,100],
+        #6: [20,50,100],
+        #7: [20,50,100],
+        8: [20,50,100],
     }
 
     results = {}

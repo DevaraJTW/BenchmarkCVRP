@@ -6,6 +6,8 @@ from models.weighted_average_simple import getWeightedAverageSimplePolicy
 from models.gru_graph_ctx import getGRUGraphCTXPolicy
 from models.attention_sage_encoder import getAttentionSAGEEncoderPolicy
 from models.learnable_depot_modifier import getLearnableDepotProbsPolicy
+from models.learnable_scaling_factor import getLearnableScalingFactorPolicy
+from models.baseline_esf import getBaselineESFPolicy
 
 architectureList = [
     "Baseline",                 # 0
@@ -16,6 +18,8 @@ architectureList = [
     "GRUGraphCTX",              # 5
     "AttentionSAGEEncoder",     # 6
     "LearnableDepotModifier",   # 7
+    "LearnableScalingFactor",   # 8
+    #"BaselineESF",              # 9
 ]
 
 def getPolicyByModelArchitecture(
@@ -23,7 +27,9 @@ def getPolicyByModelArchitecture(
         env,
         embeddingDimension,
         numEncoderLayers,
-        numberOfHeads
+        numberOfHeads,
+        trainSize: int = None,
+        testSize: int = None,
         ):
     
     match modelArchitecture:
@@ -43,5 +49,9 @@ def getPolicyByModelArchitecture(
             policy = getAttentionSAGEEncoderPolicy(env, embeddingDimension, numEncoderLayers, numberOfHeads)
         case "LearnableDepotModifier":
             policy = getLearnableDepotProbsPolicy(env, embeddingDimension, numEncoderLayers, numberOfHeads)
+        case "LearnableScalingFactor":
+            policy = getLearnableScalingFactorPolicy(env, embeddingDimension, numEncoderLayers, numberOfHeads)
+        #case "BaselineESF":
+        #    policy = getBaselineESFPolicy(env, embeddingDimension, numEncoderLayers, numberOfHeads, trainSize, testSize)
 
     return policy

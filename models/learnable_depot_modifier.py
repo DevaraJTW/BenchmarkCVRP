@@ -74,7 +74,7 @@ class LearnableDepotModifierDecoder(AttentionModelDecoder):
         depot_modifier = self.depot_modifier(log_problem_size_tensor)
 
         logits = torch.cat(
-            [logits[:, :1] + depot_modifier, logits[:, 1:]], dim=-1
+            [logits[:, :1] * torch.exp(depot_modifier), logits[:, 1:]], dim=-1
         )
 
         return logits, mask

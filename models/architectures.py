@@ -8,6 +8,7 @@ from models.attention_sage_encoder import getAttentionSAGEEncoderPolicy
 from models.learnable_depot_modifier import getLearnableDepotProbsPolicy
 from models.learnable_scaling_factor import getLearnableScalingFactorPolicy
 from models.baseline_esf import getBaselineESFPolicy
+from models.combine_00 import getCombine00Policy
 
 architectureList = [
     "Baseline",                 # 0
@@ -20,6 +21,7 @@ architectureList = [
     "LearnableDepotModifier",   # 7
     "LearnableScalingFactor",   # 8
     "BaselineESF",              # 9
+    "Combine00",                # 10
 ]
 
 def getPolicyByModelArchitecture(
@@ -53,5 +55,7 @@ def getPolicyByModelArchitecture(
             policy = getLearnableScalingFactorPolicy(env, embeddingDimension, numEncoderLayers, numberOfHeads)
         case "BaselineESF":
             policy = getBaselineESFPolicy(env, embeddingDimension, numEncoderLayers, numberOfHeads, trainSize, testSize)
+        case "Combine00":
+            policy = getCombine00Policy(env, embeddingDimension, numEncoderLayers, numberOfHeads)
 
     return policy

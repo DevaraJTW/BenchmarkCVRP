@@ -29,7 +29,7 @@ def edge_idx_fn_wrapper(td: TensorDict, num_nodes: int):
     return get_full_graph_edge_index(num_nodes, self_loop=False).to(td.device)
 
 
-class attentionSAGEEncoder(nn.Module):
+class AttentionSAGEEncoder(nn.Module):
 
     def __init__(
         self,
@@ -70,7 +70,7 @@ class attentionSAGEEncoder(nn.Module):
         hidden_SAGE, init_embeds_SAGE = self.sage(td)
         
         alpha = torch.sigmoid(self.alpha_logit)
-        #print("attentionSAGEEncoder alpha is:", alpha)
+        #print("AttentionSAGEEncoder alpha is:", alpha)
         
         hidden = alpha * hidden_Attention + (1.0 - alpha) * hidden_SAGE
         init_embeds = alpha * init_embeds_Attention + (1.0 - alpha) * init_embeds_SAGE
@@ -84,7 +84,7 @@ def getAttentionSAGEEncoderPolicy(
     num_heads: int,
     ):
     
-    customEncoder = attentionSAGEEncoder(
+    customEncoder = AttentionSAGEEncoder(
         env_name=env.name,
         embed_dim=embeddingDimension,
         num_layers=num_encoder_layers,

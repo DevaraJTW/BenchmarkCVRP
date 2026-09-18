@@ -19,7 +19,7 @@ architectureList = [
     "AttentionSAGEEncoder",     # 6
     "LearnableDepotModifier",   # 7
     "LearnableScalingFactor",   # 8
-    #"BaselineESF",              # 9
+    "BaselineESF",              # 9
 ]
 
 def getPolicyByModelArchitecture(
@@ -51,7 +51,7 @@ def getPolicyByModelArchitecture(
             policy = getLearnableDepotProbsPolicy(env, embeddingDimension, numEncoderLayers, numberOfHeads)
         case "LearnableScalingFactor":
             policy = getLearnableScalingFactorPolicy(env, embeddingDimension, numEncoderLayers, numberOfHeads)
-        #case "BaselineESF":
-        #    policy = getBaselineESFPolicy(env, embeddingDimension, numEncoderLayers, numberOfHeads, trainSize, testSize)
+        case "BaselineESF":
+            policy = getBaselineESFPolicy(env, embeddingDimension, numEncoderLayers, numberOfHeads, trainSize, testSize)
 
     return policy

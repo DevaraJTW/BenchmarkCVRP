@@ -9,6 +9,7 @@ from models.learnable_depot_modifier import getLearnableDepotProbsPolicy
 from models.learnable_scaling_factor import getLearnableScalingFactorPolicy
 from models.baseline_esf import getBaselineESFPolicy
 from models.combine_00 import getCombine00Policy
+from models.combine_01 import getCombine01Policy
 
 architectureList = [
     "Baseline",                 # 0
@@ -22,6 +23,7 @@ architectureList = [
     "LearnableScalingFactor",   # 8
     "BaselineESF",              # 9
     "Combine00",                # 10
+    "Combine01",                # 11
 ]
 
 def getPolicyByModelArchitecture(
@@ -57,5 +59,7 @@ def getPolicyByModelArchitecture(
             policy = getBaselineESFPolicy(env, embeddingDimension, numEncoderLayers, numberOfHeads, trainSize, testSize)
         case "Combine00":
             policy = getCombine00Policy(env, embeddingDimension, numEncoderLayers, numberOfHeads)
+        case "Combine01":
+            policy = getCombine01Policy(env, embeddingDimension, numEncoderLayers, numberOfHeads)
 
     return policy

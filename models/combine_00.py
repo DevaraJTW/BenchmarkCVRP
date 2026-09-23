@@ -16,17 +16,12 @@ def getCombine00Policy(
         env_name=env.name,
         embed_dim=embeddingDimension,
         num_layers=num_encoder_layers,
-    )
+        )
 
     set2setDecoder = Set2SetModelDecoder(
         embed_dim=embeddingDimension,
         num_heads=num_heads,
         env_name=env.name,
-        mask_inner=True,
-        out_bias_pointer_attn=False,
-        linear_bias=False,
-        use_graph_context=True,
-        check_nan=True,
         )
 
     learnable_sdpa_fn = LearnableSDPAScalingFactor()

@@ -44,6 +44,10 @@ performances = {
   'LearnableDepotModifierCVRP20': [-6.468982219696045, -13.727325439453125, -25.652448654174805],
   'LearnableDepotModifierCVRP50': [-6.738359451293945, -13.399460792541504, -24.211990356445312],
   'LearnableDepotModifierCVRP100': [-7.0453009605407715, -13.630511283874512, -24.125625610351562],
+
+  'SetTransformerEncoderCVRP20': [-6.506193161010742, -13.660271644592285, -25.229263305664062], 
+  'SetTransformerEncoderCVRP50': [-6.65669059753418, -13.432103157043457, -24.26996612548828], 
+  'SetTransformerEncoderCVRP100': [-7.338403224945068, -13.680845260620117, -24.092863082885742],
 }
 
 relative_gaps = {
@@ -85,10 +89,14 @@ relative_gaps = {
 
    'LearnableScalingFactorCVRP20': [-0.0, 1.9547019460856543, 4.894198902914749], 
    'LearnableScalingFactorCVRP50': [2.7752619702465986, -0.0, 0.49069639849897184], 
-   'LearnableScalingFactorCVRP100': [7.772503807339946, 1.1479606732499883, -0.0]
+   'LearnableScalingFactorCVRP100': [7.772503807339946, 1.1479606732499883, -0.0],
+
+   'SetTransformerEncoderCVRP20': [-0.0, 1.6986802802298486, 4.71675042882536], 
+   'SetTransformerEncoderCVRP50': [2.313141230194549, -0.0, 0.7350850830524306], 
+   'SetTransformerEncoderCVRP100': [12.79104452234003, 1.8518477759473284, -0.0],
    }
 
-#relative_gaps = {}
+relative_gaps = {}
 
 gap_reduction = {
    'AggregateCVRP20': [0.0, -0.18128048531614693, -3.6769739227133593], 
@@ -125,13 +133,16 @@ gap_reduction = {
 
    'BaselineESFCVRP20': [0.0, 0.48071051466621495, 1.406546335168366], 
    'BaselineESFCVRP50': [0.3699351086696341, 0.0, 0.032262121362453655], 
-   'BaselineESFCVRP100': [0.24417306581900178, -0.036105065527170854, 0.0]
-
+   'BaselineESFCVRP100': [0.24417306581900178, -0.036105065527170854, 0.0],
+ 
+   'SetTransformerEncoderCVRP20': [0.0, 0.4835517288003319, 0.5148558961935512], 
+   'SetTransformerEncoderCVRP50': [0.29781005285275564, 0.0, -0.18801935616882515], 
+   'SetTransformerEncoderCVRP100': [-5.0179554214301, -0.2727902797158346, 0.0],
    }
 gap_reduction = {}
 
 def calculateRelativeGaps():
-  for arch in architectureList:
+  for arch in architectureList[0:11]:
       n_list = ["20", "50", "100"]
 
       for n in n_list:
@@ -145,7 +156,7 @@ def calculateRelativeGaps():
   return
 
 def compareGaps():
-  for arch in architectureList[1:]:
+  for arch in architectureList[1:11]:
       n_list = ["20", "50", "100"]
 
       for n in n_list:
@@ -158,7 +169,7 @@ def compareGaps():
   print(gap_reduction)
   return
 
-#calculateRelativeGaps()
+calculateRelativeGaps()
 compareGaps()
 
 

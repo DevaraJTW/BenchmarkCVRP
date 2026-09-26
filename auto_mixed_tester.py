@@ -50,7 +50,7 @@ def TestMixedModel(model_index, test_problem_size):
 
     policy = getPolicyByModelArchitecture(modelArchitecture, env, embeddingDimension, numEncoderLayers, numberOfHeads, None, test_problem_size)
 
-    modelFilePath = "OLD_mix_trained_models/"+str(modelArchitecture)+"/logs/mixed_training/checkpoints/model_checkpoint.ckpt"
+    modelFilePath = "mix_trained_models/"+str(modelArchitecture)+"/logs/mixed_training/checkpoints/model_checkpoint.ckpt"
 
     model = REINFORCE(
         env,

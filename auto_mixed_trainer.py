@@ -1,7 +1,7 @@
 import subprocess
 from models.architectures import architectureList
 
-trainSizeList= [
+trainSizeList = [
     35, 50, 75, # 1     ABC
     50, 75, 35, # 2     BCA
     75, 35, 50, # 3     CAB
@@ -14,10 +14,16 @@ trainSizeList= [
     75, 35, 50, # 10    CAB
 ]
 
+trainSizeUpList = [20,50]
+trainSizeDownList = [100,50]
+
 trainingList = {
-    #0: trainSizeList,
-    #3: trainSizeList,
-    8: trainSizeList,
+    13: trainSizeUpList,
+    14: trainSizeDownList,
+    15: trainSizeUpList,
+    16: trainSizeDownList,
+    17: trainSizeUpList,
+    18: trainSizeDownList,
 }
 
 log_file = open("experiment_log.txt", "w")
@@ -25,7 +31,7 @@ log_file = open("experiment_log.txt", "w")
 for enumArch, numLocList in trainingList.items():
     epoch = 0
     for numLoc in numLocList:
-        epoch += 5
+        epoch += 75
         print(f"Starting {architectureList[enumArch]} on CVRP{numLoc}")
         subprocess.run(
             [

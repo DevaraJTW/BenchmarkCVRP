@@ -26,6 +26,12 @@ architectureList = [
     "SetTransformerEncoder",    # 10
     "Combine00",                # 11
     "Combine01",                # 12
+    "MixBaselineUp",            # 13
+    "MixBaselineDown",          # 14
+    "MixLSFUp",                 # 15
+    "MixLSFDown",               # 16
+    "MixDepotModUp",            # 17
+    "MixDepotModDown",          # 18
 ]
 
 def getPolicyByModelArchitecture(
@@ -39,7 +45,7 @@ def getPolicyByModelArchitecture(
         ):
     
     match modelArchitecture:
-        case "Baseline":
+        case "Baseline"|"MixBaselineUp"|"MixBaselineDown":
             policy = getBaselinePolicy(env, embeddingDimension, numEncoderLayers, numberOfHeads)
         case "Aggregate":
             policy = getAggregatePolicy(env, embeddingDimension, numEncoderLayers, numberOfHeads)
@@ -53,9 +59,9 @@ def getPolicyByModelArchitecture(
             policy = getGRUGraphCTXPolicy(env, embeddingDimension, numEncoderLayers, numberOfHeads)
         case "AttentionSAGEEncoder":
             policy = getAttentionSAGEEncoderPolicy(env, embeddingDimension, numEncoderLayers, numberOfHeads)
-        case "LearnableDepotModifier":
+        case "LearnableDepotModifier"|"MixDepotModUp"|"MixDepotModDown":
             policy = getLearnableDepotProbsPolicy(env, embeddingDimension, numEncoderLayers, numberOfHeads)
-        case "LearnableScalingFactor":
+        case "LearnableScalingFactor"|"MixLSFUp"|"MixLSFDown":
             policy = getLearnableScalingFactorPolicy(env, embeddingDimension, numEncoderLayers, numberOfHeads)
         case "BaselineESF":
             policy = getBaselineESFPolicy(env, embeddingDimension, numEncoderLayers, numberOfHeads, trainSize, testSize)

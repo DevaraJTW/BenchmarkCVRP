@@ -79,8 +79,14 @@ def TestMixedModel(model_index, test_problem_size):
 
 def main():
     trainingList = {
-        0: None,
-        8: None,
+        #0: None,
+        #8: None,
+        13:  None,
+        14:  None,
+        15:  None,
+        16:  None,
+        17:  None,
+        18:  None,
         #1: [20,50,100],
         #2: [20,50,100],
         #3: [20,50,100],

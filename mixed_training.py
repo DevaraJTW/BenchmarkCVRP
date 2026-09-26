@@ -93,7 +93,7 @@ trainer = RL4COTrainer(
 
 checkpoint_path = "mix_trained_models/"+str(modelArchitecture)+"/logs/mixed_training/checkpoints/model_checkpoint.ckpt"
 prev_checkpoint_path = checkpoint_path
-if num_epochs == 5:
+if num_epochs == 75:
     print("Beginning of training, training without checkpoint.")
     prev_checkpoint_path = None
 

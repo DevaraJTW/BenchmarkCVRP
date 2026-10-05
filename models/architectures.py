@@ -4,7 +4,7 @@ from models.set2set_graph_ctx import getSet2SetPolicy
 from models.weighted_average import getWeightedAveragePolicy
 from models.weighted_average_simple import getWeightedAverageSimplePolicy
 from models.gru_graph_ctx import getGRUGraphCTXPolicy
-from models.attention_sage_encoder import getAttentionSAGEEncoderPolicy
+from models.graph_sage_encoder import getGraphSAGEEncoderPolicy
 from models.learnable_depot_modifier import getLearnableDepotProbsPolicy
 from models.learnable_scaling_factor import getLearnableScalingFactorPolicy
 from models.baseline_esf import getBaselineESFPolicy
@@ -19,7 +19,7 @@ architectureList = [
     "WeightedAverage",          # 3
     "WeightedAverageSimple",    # 4
     "GRUGraphCTX",              # 5
-    "AttentionSAGEEncoder",     # 6
+    "GraphSAGEEncoder",         # 6
     "LearnableDepotModifier",   # 7
     "LearnableScalingFactor",   # 8
     "BaselineESF",              # 9
@@ -57,8 +57,8 @@ def getPolicyByModelArchitecture(
             policy = getWeightedAverageSimplePolicy(env, embeddingDimension, numEncoderLayers, numberOfHeads)
         case "GRUGraphCTX":
             policy = getGRUGraphCTXPolicy(env, embeddingDimension, numEncoderLayers, numberOfHeads)
-        case "AttentionSAGEEncoder":
-            policy = getAttentionSAGEEncoderPolicy(env, embeddingDimension, numEncoderLayers, numberOfHeads)
+        case "GraphSAGEEncoder":
+            policy = getGraphSAGEEncoderPolicy(env, embeddingDimension, numEncoderLayers, numberOfHeads)
         case "LearnableDepotModifier"|"MixDepotModUp"|"MixDepotModDown":
             policy = getLearnableDepotProbsPolicy(env, embeddingDimension, numEncoderLayers, numberOfHeads)
         case "LearnableScalingFactor"|"MixLSFUp"|"MixLSFDown":

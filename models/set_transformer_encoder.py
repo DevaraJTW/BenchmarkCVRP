@@ -14,6 +14,7 @@ class MAB(nn.Module):
         self,
         embed_dim: int = 128,
         num_heads: int = 8,
+        rff_hidden_dim: int = 512,
     ):
         super().__init__()
 
@@ -26,9 +27,9 @@ class MAB(nn.Module):
         self.norm2 = nn.LayerNorm(embed_dim)
 
         self.rff = nn.Sequential(
-            nn.Linear(embed_dim, embed_dim),
+            nn.Linear(embed_dim, rff_hidden_dim),
             nn.ReLU(),
-            nn.Linear(embed_dim, embed_dim),
+            nn.Linear(rff_hidden_dim, embed_dim),
         )
 
     def forward(self, X, Y):

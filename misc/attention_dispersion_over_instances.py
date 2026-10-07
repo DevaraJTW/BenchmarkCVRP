@@ -87,7 +87,8 @@ x20  = [0, 1, 2]
 x50  = [4, 5, 6]
 x100 = [8, 9, 10]
 
-plt.figure(figsize=(9, 5))
+image_scaler = 3/4
+plt.figure(figsize=(9.5 * image_scaler, 5 * image_scaler))
 plt.rcParams.update({"font.size": 14})
 colors = ["tab:blue", "tab:orange", "tab:grey"]
 plt.bar(x20, cvrp20, color=colors)
@@ -113,8 +114,14 @@ legend_elements = [
     Patch(facecolor=colors[1], label="Train50"),
     Patch(facecolor=colors[2], label="Train100"),
 ]
-plt.legend(handles=legend_elements, fontsize=11)
-plt.title("Average entropy over all steps of 10,000 instances")
+plt.legend(handles=legend_elements, fontsize=14)
+#plt.title("Average entropy over all steps of 10,000 instances", fontsize=14)
 plt.tight_layout()
+plt.subplots_adjust(
+    top=0.92,
+    bottom=0.075,
+    left=0.098,
+    right=0.99,
+)
 plt.savefig("average_entropy.svg", format="svg")
 plt.show()

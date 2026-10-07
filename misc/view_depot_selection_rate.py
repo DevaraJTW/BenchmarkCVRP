@@ -1,7 +1,7 @@
 import torch
 import matplotlib.pyplot as plt
 
-def select_depot_rate_curve(logprobs_list, actions_list, num_customers=20):
+def select_depot_rate_curve(logprobs_list, actions_list, num_customers):
     logp = torch.tensor(logprobs_list)
     actions = torch.tensor(actions_list)
 
@@ -19,35 +19,56 @@ def select_depot_rate_curve(logprobs_list, actions_list, num_customers=20):
 
     return curve
 
-dataM20 = torch.load(
-    "misc/depot_probs_acts_M20_TS20.pt",
-    weights_only=False
-)
+def drawDepotSelectionRate(ax, test_size, first):
+    dataM20 = torch.load(
+        "misc/depot_probs_acts_M20_TS"+str(test_size)+".pt",
+        weights_only=False
+    )
 
-dataM100 = torch.load(
-    "misc/depot_probs_acts_M100_TS20.pt",
-    weights_only=False
-)
+    dataM100 = torch.load(
+        "misc/depot_probs_acts_M100_TS"+str(test_size)+".pt",
+        weights_only=False
+    )
 
-curve_train20 = select_depot_rate_curve(
-    dataM20["log_probs"],
-    dataM20["actions"],
-)
+    curve_train20 = select_depot_rate_curve(
+        dataM20["log_probs"],
+        dataM20["actions"],
+        test_size,
+    )
 
-curve_train100 = select_depot_rate_curve(
-    dataM100["log_probs"],
-    dataM100["actions"],
-)
+    curve_train100 = select_depot_rate_curve(
+        dataM100["log_probs"],
+        dataM100["actions"],
+        test_size,
+    )
 
-plt.figure()
-plt.plot(range(len(curve_train20)), curve_train20, marker="o", label="Trained on CVRP20")
-plt.plot(range(len(curve_train100)), curve_train100, marker="o", label="Trained on CVRP100")
-plt.xlabel("Decoding step")
-plt.ylabel("Mean depot probability")
-plt.title("Depot selection rate over steps tested on CVRP20")
-plt.legend()
-plt.savefig("depot_select_rate_CVRP.svg", format="svg")
+    ax.grid()
+    ax.set_xlim(0, 130)
+    markersize = 3
+    ax.plot(range(len(curve_train20)), curve_train20, marker="o", markersize=markersize, label="Trained on CVRP20")
+    ax.plot(range(len(curve_train100)), curve_train100, marker="o", markersize=markersize, label="Trained on CVRP100")
+    if first:
+        ax.legend()
+
+
+fig, axes = plt.subplots(2, 1, figsize=(9, 5))
+nList = [20, 100]
+first = True
+for i, ax in enumerate(axes):
+    drawDepotSelectionRate(ax, nList[i], first)
+    first = False
+
+plt.rcParams.update({"font.size": 14})
+plt.figtext(0.002, 0.5, "Depot selection rate", va="center", rotation="vertical", fontsize=14)
+plt.figtext(0.5, 0.03, "Steps", ha="center", fontsize=14)
+plt.subplots_adjust(
+    left=0.06,
+    bottom=0.11,
+    right=0.995,
+    top=0.99,
+    hspace=0.15,
+)
+#plt.legend()
+fig.savefig("depot_selection_rate.svg", format="svg")
 plt.show()
-
-
 

@@ -42,50 +42,68 @@ def attention_dispersion(logprobs_list, actions_list, num_customers=20):
 
     return mean_entropy_per_step
 
-train_size = 100
+def createPlotByN(subplot_ax, train_size, render_legend):
+    dataTS20 = torch.load(
+        "misc/attention_data_M"+str(train_size)+"_TS20.pt",
+        weights_only=False
+    )
 
-dataTS20 = torch.load(
-    "misc/attention_data_M"+str(train_size)+"_TS20.pt",
-    weights_only=False
-)
+    entropyTS20 = attention_dispersion(
+        dataTS20["logprobs"],
+        dataTS20["actions"],
+        20
+    )
 
-entropyTS20 = attention_dispersion(
-    dataTS20["logprobs"],
-    dataTS20["actions"],
-    20
-)
+    dataTS50 = torch.load(
+        "misc/attention_data_M"+str(train_size)+"_TS50.pt",
+        weights_only=False
+    )
 
-dataTS50 = torch.load(
-    "misc/attention_data_M"+str(train_size)+"_TS50.pt",
-    weights_only=False
-)
+    entropyTS50 = attention_dispersion(
+        dataTS50["logprobs"],
+        dataTS50["actions"],
+        50
+    )
 
-entropyTS50 = attention_dispersion(
-    dataTS50["logprobs"],
-    dataTS50["actions"],
-    50
-)
+    dataTS100 = torch.load(
+        "misc/attention_data_M"+str(train_size)+"_TS100.pt",
+        weights_only=False
+    )
 
-dataTS100 = torch.load(
-    "misc/attention_data_M"+str(train_size)+"_TS100.pt",
-    weights_only=False
-)
+    entropyTS100 = attention_dispersion(
+        dataTS100["logprobs"],
+        dataTS100["actions"],
+        100
+    )
 
-entropyTS100 = attention_dispersion(
-    dataTS100["logprobs"],
-    dataTS100["actions"],
-    100
-)
+    markersize = 1.8
+    linewidth = 1
+    subplot_ax.plot(range(len(entropyTS20)), entropyTS20, linewidth=linewidth, marker="o", markersize=markersize, label="Tested on CVRP20", color="brown")
+    subplot_ax.plot(range(len(entropyTS50)), entropyTS50, linewidth=linewidth, marker="o", markersize=markersize, label="Tested on CVRP50", color="orange")
+    subplot_ax.plot(range(len(entropyTS100)), entropyTS100, linewidth=linewidth, marker="o", markersize=markersize, label="Tested on CVRP100", color="blue")
+    subplot_ax.grid()
+    if render_legend:
+        subplot_ax.legend()
 
-plt.figure()
+fig, axes = plt.subplots(1, 3, figsize=(9.5, 3))
+nList = [20, 50, 100]
+for i, ax in enumerate(axes):
+    render_legend = False
+    if i == len(nList) - 1:
+        render_legend = True
+    createPlotByN(ax, nList[i], render_legend)
+
 plt.rcParams.update({"font.size": 14})
-plt.plot(range(len(entropyTS20)), entropyTS20, marker="o", label="Tested on CVRP20")
-plt.plot(range(len(entropyTS50)), entropyTS50, marker="o", label="Tested on CVRP50")
-plt.plot(range(len(entropyTS100)), entropyTS100, marker="o", label="Tested on CVRP100")
-plt.xlabel("Decoding step")
-plt.ylabel("Mean entropy")
-plt.legend()
-plt.title("Attention dispersion of model trained on CVRP"+str(train_size))
-plt.grid()
-plt.savefig("attentionDispersionM"+str(train_size)+".svg", format="svg")
+plt.figtext(0.002, 0.5, "Mean entropy", va="center", rotation="vertical", fontsize=14)
+plt.figtext(0.5, 0.03, "Steps", ha="center", fontsize=14)
+plt.subplots_adjust(
+    left=0.055,
+    bottom=0.155,
+    right=0.99,
+    top=0.92,
+    wspace=0.125
+)
+#plt.legend()
 plt.show()
+fig.savefig("attentionDispersion.svg", format="svg")
+

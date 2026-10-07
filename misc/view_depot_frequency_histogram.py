@@ -2,7 +2,7 @@ import torch
 import matplotlib.pyplot as plt
 import numpy as np
 
-def depot_tourroute_length_histogram(logprobs_list, actions_list, num_customers=20):
+def depot_tourroute_length_histogram(logprobs_list, actions_list, num_customers):
     logp = torch.tensor(logprobs_list)
     actions = torch.tensor(actions_list)
 
@@ -29,7 +29,8 @@ def depot_tourroute_length_histogram(logprobs_list, actions_list, num_customers=
 
     return route_lengths
 
-testProblemSize = "100"
+testProblemSizeInteger = 100
+testProblemSize = str(testProblemSizeInteger)
 
 dataM20 = torch.load(
     "misc/depot_probs_acts_M20_TS"+testProblemSize+".pt",
@@ -44,14 +45,19 @@ dataM100 = torch.load(
 curve_train20 = depot_tourroute_length_histogram(
     dataM20["log_probs"],
     dataM20["actions"],
+    testProblemSizeInteger,
 )
 
 curve_train100 = depot_tourroute_length_histogram(
     dataM100["log_probs"],
     dataM100["actions"],
+    testProblemSizeInteger,
 )
 
-max_len = 20
+max_len = max(
+    max(curve_train20),
+    max(curve_train100)
+)
 x = np.arange(1, max_len + 1)
 
 counts20 = np.bincount(curve_train20, minlength=max_len + 1)[1:max_len+1]
@@ -62,7 +68,8 @@ perc100 = counts100 / counts100.sum() * 100
 
 width = 0.4
 
-plt.figure()
+plt.figure(figsize=(5, 4))
+plt.rcParams.update({"font.size": 14})
 
 plt.bar(
     x - width/2,
@@ -71,19 +78,27 @@ plt.bar(
     label="Train20"
 )
 
+print("perc20", perc20)
+
 plt.bar(
     x + width/2,
     perc100,
     width=width,
     label="Train100"
 )
+print("perc100", perc100)
 
-
-plt.xlabel("Customers served per tour")
-plt.ylabel("Count")
-plt.title("Route length before depot return tested on CVRP"+testProblemSize)
+plt.xlabel("Customers served per tour", fontsize=18)
+plt.ylabel("Count", fontsize=18)
+plt.title("CVRP"+testProblemSize, fontsize=22)
 plt.xticks(x)
 plt.legend()
+plt.subplots_adjust(
+    left=0.132,
+    bottom=0.148,
+    right=0.98,
+    top=0.912,
+)
 plt.savefig("depot_tour_length_CVRP"+testProblemSize+".svg", format="svg")
 plt.show()
 

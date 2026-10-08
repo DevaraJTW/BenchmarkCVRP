@@ -18,6 +18,8 @@ from rl4co.data.utils import load_npz_to_tensordict
 from rl4co.data.dataset import TensorDictDataset
 from torch.utils.data import DataLoader
 
+from models.UltimateCVRP import UltimateCVRP
+
 _orig_render = cvrp_render.render
 
 @staticmethod
@@ -26,11 +28,13 @@ def render_with_depot(td: TensorDict, actions: torch.Tensor = None, ax=None):
 
 CVRPEnv.render = render_with_depot
 
-def TestModel(model_index, train_problem_size, test_problem_size):
+def TestModel(model_index, train_problem_size, test_problem_size, testing_selector=False):
 
     numOfLocations = test_problem_size
-    valFilePath = "CVRP"+str(numOfLocations)+"/cvrp"+str(numOfLocations)+"_val.npz"
     testFilePath = "CVRP"+str(numOfLocations)+"/cvrp"+str(numOfLocations)+"_test.npz"
+    valFilePath = "CVRP"+str(numOfLocations)+"/cvrp"+str(numOfLocations)+"_val.npz"
+    if testing_selector:
+        testFilePath = "CVRP"+str(numOfLocations)+"/cvrp"+str(numOfLocations)+"_6249.npz"
 
     env = CVRPEnv(
         generator_params={
@@ -44,6 +48,10 @@ def TestModel(model_index, train_problem_size, test_problem_size):
     )
 
     modelArchitecture = architectureList[model_index]
+    if modelArchitecture == "UltimateCVRP":
+        ultimate = UltimateCVRP()
+        modelArchitecture = ultimate.select_model(train_problem_size, test_problem_size)
+
     embeddingDimension = 128
     numEncoderLayers = 3
     numberOfHeads = 8
@@ -80,7 +88,7 @@ def TestModel(model_index, train_problem_size, test_problem_size):
 
 def main():
     trainingList = {
-        #0: [20,50,100],
+        0: [20,50,100],
         #1: [20,50,100],
         #2: [20,50,100],
         #3: [20,50,100],
@@ -90,17 +98,21 @@ def main():
         #7: [20,50,100],
         #8: [20,50,100],
         #9: [20,50,100],
-        10: [20,50,100],
+        #10: [20,50,100],
         #11: [20,50,100],
+        19: [20,50,100],
     }
 
+    testingList = [20, 50, 100]
     results = {}
+    testing_selector = True
+    testingList = [35, 75, 200] if testing_selector else [20, 50, 100]
     for enumArch, numLocList in trainingList.items():
         for numLoc in numLocList:
             results[architectureList[enumArch]+"CVRP"+str(numLoc)] = [
-                TestModel(enumArch, numLoc, 20),
-                TestModel(enumArch, numLoc, 50),
-                TestModel(enumArch, numLoc, 100),
+                TestModel(enumArch, numLoc, testingList[0], testing_selector),
+                TestModel(enumArch, numLoc, testingList[1], testing_selector),
+                TestModel(enumArch, numLoc, testingList[2], testing_selector),
             ]
 
     print(results)

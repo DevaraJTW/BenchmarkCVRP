@@ -32,6 +32,7 @@ architectureList = [
     "MixLSFDown",               # 16
     "MixDepotModUp",            # 17
     "MixDepotModDown",          # 18
+    "UltimateCVRP",             # 19
 ]
 
 def getPolicyByModelArchitecture(

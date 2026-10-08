@@ -8,7 +8,7 @@ import rl4co.envs.routing.cvrp.render as cvrp_render
 
 from rl4co.data.utils import save_tensordict_to_npz
 
-isTest = True
+isTest = False
 theSeed = 0
 
 if isTest:
@@ -18,6 +18,7 @@ else:
     
 #torch.manual_seed(theSeed)
 #torch.cuda.manual_seed_all(theSeed)
+theSeed = 6249 # SELECTOR APP
 
 _orig_render = cvrp_render.render
 
@@ -27,7 +28,7 @@ def render_with_depot(td: TensorDict, actions: torch.Tensor = None, ax=None):
 
 CVRPEnv.render = render_with_depot
 
-locationQuantity = 20
+locationQuantity = 200
 
 # RL4CO env based on TorchRL
 env = CVRPEnv(
